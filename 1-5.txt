@@ -1,0 +1,502 @@
+绝对引用：不管鼠标点击了哪个单元格，执行宏时，都会执行录制时操作的那个单元格。【我们使用绝对引用】
+相对引用：鼠标点击哪个单元格，执行宏时，被操作的单元格以这个单元格位置为基准。
+一、操作步骤：
+1、把报表格式做好，把应该写的公式写好
+2、开发工具-录制宏
+3、平时你怎么操作还怎么操作
+4、操作完以后，点停止录制
+5、执行宏
+二、注意事项
+切记：遇到在录制宏内部生成数据透视表的情况时，切记要提前新建一个工作表并重命名，如果你让程序给你做这项工作，那么每次生成的
+Sheet序号是不一样的，例如你操作这次创建的工作表是Sheet4，以后再次操作时会生成Sheet5\Sheet6\Sheet7….，程序很固执，他只认
+你录制时的Sheet4找不到就报错。
+三、凡是带有VBA代码的文件需要保存时
+请使用（.xlsm）格式
+四、关闭屏幕更新
+屏幕更新 关闭屏幕更新 Excel.Application.ScreenUpdating = False
+屏幕更新 重新开启屏幕更新 Excel.Application.ScreenUpdating = True
+01、固定格式的报表自动化
+2020年4月17日 4:04
+ 分区 第2季 的第 1 页 
+循环体
+Exit For
+循环体
+For 循环变量 = 初值 To 终值 【Step 步长值】
+Next 【循环变量】
+条件表达式返回True时要执行的操作和计算
+if 条件表达式 Then
+elseif 条件表达式 then
+条件表达式返回True时要执行的操作和计算
+条件表达式返回False时要执行的操作和计算
+Else
+End If
+02.If条件分支和For循环语句
+2020年4月16日 11:15
+ 分区 第2季 的第 2 页 
+变量：姓名，可以叫孙兴华，华兴孙，兴华孙，华孙兴，等等
+常量：孙兴华
+一、变量名
+变量名（不区分大小写）：
+可以使用，中文、英文、数字、下划线
+切记不能以数字开头，变量名不能与系统保留字重名（例如sub、end、if、for、while等等）
+二、强制声明变量
+Option Explicit
+写在模块第一行，所有Sub过程的前面
+四、定义变量
+Dim 变量名 As 数据类型
+类型 名称 占用存储空间（字节） 包含的数据及范围
+整数型 Integer 2 -32768到32767的整数
+长整数型 Long 4 -2147483648到2147483647的整数
+字节型 Byte 1 0到255的整数
+日期型 Date 8 范围：100年1月1日至9999年12月31日
+字符型 string
+工作表 Worksheet 当前工作簿所有工作表
+单元格 Range 当前工作表所有单元格
+三、固定不变的值使用常量
+Const 常量名称 As 数据类型 = 存储在常量中的数据
+Const p As Single = 3.14
+2.1 变量与定义变量
+2020年4月16日 11:28
+ 分区 第2季 的第 3 页 
+Sub 评价()
+ If Range("B2") >= 90 Then
+ Range("C2") = "优秀"
+ ElseIf Range("B2") >= 80 Then
+ Range("C2") = "良好"
+ ElseIf Range("B2") >= 60 Then
+ Range("C2") = "及格"
+ Else
+ Range("C2") = "不及格"
+ End If
+End Sub
+2.2.if条件语句
+2020年4月16日 9:34
+ 分区 第2季 的第 4 页 
+Sub 插入工作表()
+ Worksheets.Add ‘在活动工作表前插入一张新工作表
+End Sub
+2.3 For循环 【重点】
+2020年4月12日 12:38
+ 分区 第2季 的第 5 页 
+语法：
+循环体（要循环执行的操作或计算）
+For 循环变量 = 初值 To 终值 Step 步长值
+Next 循环变量名
+Sub 新建5张工作表()
+ Dim i As Byte '也可以定义为整型
+ For i = 1 To 5 Step 1 '从1到5，步长为1时可以省略
+ Worksheets.Add
+ Next i 'i可以省略 
+End Sub
+For i = 1 To 5 Step 1
+VBA会让循环变量i的值从1增加到5，每次增加1（每次增加多少，由Step后的数字确定）
+For i = 5 To 1 Step -1
+注意：当循环变量的终值大于初值时，步长值应设置为正整数，当循环变量的终值小于初值时，步长值该设置为负整数，否则，程序不会执行。
+2.4 For…Next循环执行同一段代码
+2020年4月12日 12:45
+ 分区 第2季 的第 6 页 
+循环体
+Exit For
+循环体
+For 循环变量 = 初值 To 终值 【Step 步长值】
+Next 【循环变量】
+注：【】括号内代码可以省略
+Sub 新建5张工作表()
+ Dim i As Byte '也可以定义为整型
+ For i = 1 To 5 Step 1 '从1到5，步长为1时可以省略
+ Exit For
+ Worksheets.Add
+ Next i 'i可以省略 
+End Sub
+遇到Exit For语句，VBA立即退出For循环，执行Next语句之后的代码
+2.5 Exit For终止For循环
+2020年4月12日 13:03
+ 分区 第2季 的第 7 页 
+Sub 评价()
+ Dim i As Byte
+ For i = 2 To 7
+ If Range("B" & i) >= 90 Then
+ Range("C" & i) = "优秀"
+ ElseIf Range("B" & i) >= 80 Then
+ Range("C" & i) = "良好"
+ ElseIf Range("B" & i) >= 60 Then
+ Range("C" & i) = "及格"
+ Else
+ Range("C" & i) = "不及格"
+ End If
+ Next
+End Sub
+例1：用For Each…Next语句编写一个程序，在A1:A100单元
+格区域中输入1到100的自然数
+Sub 数字()
+ Dim a As Range, i As Integer
+ i = 1
+ For Each a In Range("A1:A100")
+ a = i
+ i = i + 1
+ Next
+End Sub
+作业：实战练习
+2020年4月12日 13:21
+ 分区 第2季 的第 8 页 
+End Sub
+例2：本章节课件001
+Sub text()
+ Dim i As Integer
+ For i = 2 To 7
+ If Range("B" & i) = "女" Then
+ Range("C" & i) = "女士"
+ Else
+ Range("C" & i) = "先生"
+ End If
+ 
+ Select Case Range("D" & i)
+ Case Is >= 90
+ Range("E" & i) = "优秀"
+ Case Is >= 80
+ Range("E" & i) = "良好"
+ Case Is >= 60
+ Range("E" & i) = "及格"
+ Case Else
+ Range("E" & i) = "不及格"
+ End Select
+ Next
+ 
+End Sub
+使用For … Next
+Sub 数字()
+ Dim i As Integer
+ 分区 第2季 的第 9 页 
+ Dim i As Integer
+ For i = 1 To 100
+ Range("a" & i) = i
+ Next
+End Sub
+拓展：如果是100至10000，i*100
+ 分区 第2季 的第 10 页 
+1、打断点
+2、F8单步执行
+3、鼠标放到i上可以看到i现在的值
+4、【调试】-添加监视-表达式栏写上变量
+2.7 DEBUG检查错误
+2020年4月16日 12:03
+ 分区 第2季 的第 11 页 
+如果条件为True执行的代码
+……..
+Do While 条件
+loop
+例如：少数民族加总分加5分
+问题：如果中间有空行怎么办？
+附：删除当前工作表中所有的空行
+Sub DeleteBlankRow()
+ Dim lngFirstRow As Long
+ Dim lngLastRow As Long
+ Dim a As Long
+ lngFirstRow = ActiveSheet.UsedRange.Row
+ lngLastRow = lngFirstRow + ActiveSheet.UsedRange.Rows.Count - 1
+ For a = lngLastRow To lngFirstRow Step -1
+ If Application.WorksheetFunction.CountA(Rows(a)) = 0 Then
+ Rows(a).Delete
+ End If
+ Next
+End Sub
+问题：如果一行中有些为空，但不全为空
+Sub 总分()
+ Dim i As Integer
+ Dim lngFirstRow As Long
+ Dim lngLastRow As Long
+ Dim a As Long
+ lngFirstRow = ActiveSheet.UsedRange.Row
+ lngLastRow = lngFirstRow + ActiveSheet.UsedRange.Rows.Count - 1
+ For a = lngLastRow To lngFirstRow Step -1
+ If Application.WorksheetFunction.CountA(Rows(a)) = 0 Then
+ Rows(a).Delete
+ End If
+ Next
+ i = 2
+ Do While Range("A" & i) <> ""
+ If Range("B" & i) <> "汉" Then
+ Range("D" & i) = Range("C" & i) + 5
+ Else
+ Range("D" & i) = Range("C" & i)
+ End If
+ i = i + 1
+ Loop
+End Sub
+Sub 总分()
+ Dim i As Integer
+ i = 2
+ Do While Range("A" & i) <> ""
+ If Range("B" & i) <> "汉" Then
+ Range("D" & i) = Range("C" & i) + 5
+ Else
+ Range("D" & i) = Range("C" & i)
+ End If
+ i = i + 1
+ Loop
+End Sub
+03.Do While…loop循环
+2020年4月17日 1:15
+ 分区 第2季 的第 12 页 
+ 分区 第2季 的第 13 页 
+例如：求和与求平均
+Sub 分数()
+ Dim i, 累加器, 计数器
+ i = 2
+ 累加器 = 0
+ 计数器 = 0
+ 
+ Do While Range("A" & i) <> ""
+ 累加器 = 累加器 + Range("B" & i)
+ 计数器 = 计数器 + 1
+ i = i + 1
+ Loop
+ 
+ If 计数器 > 0 Then
+ Range("G1") = 累加器
+ Range("G2") = 累加器 / 计数器
+ End If
+ 
+End Sub
+3.1 语法和实践
+2020年4月17日 1:58
+ 分区 第2季 的第 14 页 
+Sub 成绩()
+ Dim i As Integer
+ i = 2
+ Do While Range("A" & i) <> ""
+ Range("B" & i) = Range("B" & i) * 0.6
+ Range("C" & i) = Range("C" & i) * 0.6
+ Range("D" & i) = Range("D" & i) * 0.6
+ i = i + 1
+ Loop
+End Sub
+例如：考试成绩点总成绩的60%
+什么时候用Cells,牵扯到行和列都要循环的时候，建议使用Cells
+Sub 成绩()
+ Dim i, j As Integer
+ i = 2
+ Do While Cells(i, 1) <> ""
+ For j = 2 To 4
+ Cells(i, j) = Cells(i, j) * 0.6
+ Next
+ i = i + 1
+ Loop
+End Sub
+3.2.循环嵌套
+2020年4月17日 2:39
+ 分区 第2季 的第 15 页 
+对象 对象说明
+Application Excel应用程序
+Workbook 工作簿
+worksheet 工作表
+range 单元格
+如果你不告诉程序你要操作哪个工作簿的哪张工作表，它就默认在当前工作簿当前工作表
+04.工作表
+2020年4月17日 2:55
+ 分区 第2季 的第 16 页 
+一、选择工作表
+Worksheets(1).Select
+Worksheets(1).Activate
+Sheets("Sheet1").Select
+Sheets("Sheet1").Activate
+ActiveSheet 当前工作表
+二、重命名
+Sheets("sheet1").Name = "孙兴华"
+Sheet1.Name = "孙兴华"
+三、选定所有工作表
+Sheets.Select
+Worksheets只包含工作表，Sheets不仅包含工作表，还包含图
+表、宏等。
+Activate和Select区别：激活和选定，后者要求工作表必须是可
+见的
+从功能上来说，Select代表选定对象，Activate代表激活对象。
+从数量上来说，Select可以选定多个对象，Activate只能激活一
+个对象
+4.1 引用工作表
+2020年4月18日 1:16
+ 分区 第2季 的第 17 页 
+Sheets.Add
+Sheets.Add before:=Sheets("sheet1") 在sheet1前面加一张工作表
+Sheets.Add after:=Sheets("sheet1") 在sheet1后面加一张工作表
+Sheets.Add before:=Sheets("sheet1"), Count:=3 在sheet1前面加3张工作表
+Sheets.Add after:=Sheets(Sheets.count) 在最后一张工作表后面插入工作表，先计算文件中有几张工作表
+例如：在Sheet1工作表前面插入1张名为孙兴华的工作表
+Sheets.Add before:=Sheets("sheet1")
+ActiveSheet.Name = "孙兴华"
+或
+Sheets.Add(before:=Sheets("sheet1")).Name = "孙兴华"
+4.2 新建工作表 Add
+2020年4月18日 1:16
+ 分区 第2季 的第 18 页 
+Sheet1.Range("A1") = 520
+4.3 给指定表里面的指定单元格赋值
+2020年4月18日 1:16
+ 分区 第2季 的第 19 页 
+Sheets("sheet1").Delete 删除指定工作表
+关闭屏幕提示
+Sub text()
+Excel.Application.DisplayAlerts = False
+Sheets("sheet2").Delete
+Excel.Application.DisplayAlerts = True
+End Sub
+4.4 删除工作表
+2020年4月17日 2:51
+ 分区 第2季 的第 20 页 
+4.5 实战练习
+2020年4月17日 22:43
+ 分区 第2季 的第 21 页 
+一、将工作表复制到指定位置
+Sheets("sheet1").Copy before:=Sheets(1)
+Sheets("sheet1").Copy after:=Sheets(1)
+sheets("sheet1").copy after:=sheets(sheets.count)
+二、将工作复制到新的工作簿
+Sheets("sheet1").Copy
+注意：无论工作表复制到哪里，复制得到的工作表总会成为活动工作表，都可以使用Activesheet引用它
+4.6 复制工作表
+2020年4月17日 22:43
+ 分区 第2季 的第 22 页 
+sheets("sheet1").move before:=sheet(1)
+sheets("sheet1").move after:=sheet(1)
+sheets("sheet1").move
+4.7 移动工作表
+2020年4月18日 0:12
+ 分区 第2季 的第 23 页 
+Sub text()
+Dim w1
+Set w1 = Sheets("汇总表")
+w1.Range("A1") = 521
+End Sub
+Sub text()
+Dim w1
+Set w1 = Sheets(1)
+w1.Range("A1") = 521
+Set w1 = Sheets(2)
+w1.Range("A1") = 521
+Set w1 = Sheets(3)
+w1.Range("A1") = 521
+End Sub
+Sub text()
+Dim w1
+For i = 1 To sheets.count
+ Set w1 = Sheets(i)
+ w1.Range("A1") = 520
+Next
+End Sub
+05.对象
+2020年4月18日 0:35
+ 分区 第2季 的第 24 页 
+变量不仅可以存储文本、数值、日期等数据，还能用于存工作簿、工作表、单元格等对象，用于存对象的变量，在赋值时，应该使用这个语句：
+Set 变量名称 = 要存储的对象名称
+注意：在给对象类变量赋值时，Set关键字千万不能少。
+Dim sht As Worksheet ‘定义一个工作表对象
+Set sht = ActiveSheet '将活动工作表赋给变量sht
+5.1 给对象赋值
+2020年4月17日 3:05
+ 分区 第2季 的第 25 页 
+Sub text()
+Dim w1
+Set w1 = Sheets.Add
+w1.Range("A1") = 520
+End Sub
+Sub text()
+Dim w1
+For i = 1 To 5
+ Set w1 = Sheets.Add
+ w1.Range("A1") = 520
+Next
+End Sub
+5.2 添加工作表
+2020年4月18日 0:43
+ 分区 第2季 的第 26 页 
+Sub text()
+Dim i, j, s
+Dim s1
+For i = 1 To Sheets.Count
+ Set s1 = Sheets(i)
+ s = 0
+ For j = 2 To 4
+ s = s + s1.Range("B" & j)
+ Next
+ s1.Range("E1") = s
+Next
+End Sub
+5.3 多工作表成绩汇总
+2020年4月18日 0:12
+ 分区 第2季 的第 27 页 
+Sub 添加工作表()
+ Sheets.Add
+End Sub
+每新建一张表就在A1单元格里写上520
+Sub 添加工作表()
+ Dim 表 As Worksheet
+ Set 表 = Sheets.Add
+ Range("A1") = 520
+End Sub
+利用For循环添加10张工作表
+Sub 添加10张工作表()
+ Dim 表 As Worksheet
+ Dim i As Integer
+ For i = 1 To 10
+ Set 表 = Sheets.Add
+ Range("A1") = 520
+ Next
+End Sub
+方法
+5.3 添加工作表
+2020年4月17日 3:34
+ 分区 第2季 的第 28 页 
+Sub A1()
+ Dim 表 As Worksheet
+ Set 表 = Sheets("Sheet1") '可以写成Sheets(1)
+ 表.Range("A1") = 520
+ Set 表 = Sheets("Sheet2")
+ 表.Range("A1") = 520
+ Set 表 = Sheets("Sheet3")
+ 表.Range("A1") = 520
+End Sub
+假设有100张表难到写100次吗？
+Sub A1()
+ Dim 表 As Worksheet 
+ Dim i As Integer
+ 
+ For i = 1 To 3 ‘3也可以写成Sheets.Count
+ Set 表 = Sheets("Sheet" & i) '可以写成Sheets(i)
+ Range("A1") = 520
+ Next
+End Sub
+Worksheets只包含工作表，Sheets不仅包含工作表，还包含图表、宏等。
+Activate和Select区别：激活和选定，后者要求工作表必须是可见的
+4.2 多工作表循环操作
+2020年4月17日 3:24
+ 分区 第2季 的第 29 页 
+ 分区 第2季 的第 30 页 
+3.2 用Add方法新建工作表
+2020年4月16日 13:41
+ 分区 第2季 的第 31 页 
+序号 大类 中类 小类 写法 作用
+1 工作表 引用工作表 名称 Worksheets("Sheet1").Activate
+Sheets("Sheet1").Activate
+Sheets("Sheet1").Select
+Worksheets只包含工作表，Sheets不仅包含工作表，还包含图表、宏等。
+Activate和Select区别：激活和选定，后者要求工作表必须是可见的
+MsgBox Worksheets("Sheet1").Index 显示Sheet1当前的索引号
+2 工作表 引用工作表 索引号 Worksheets(1).Select
+MsgBox Worksheets("Sheet1").Index
+3 工作表 引用工作表 重命名 Sheets("透视表").Name = "新表"
+Sheet1.Name = "新表"
+MsgBox Worksheets(1).CodeName
+MsBox Worksheets(1).CodeName 显示索引号为1的工作表名称
+4 工作表 引用工作表 活动工作表 ActiveSheet
+MsgBox ActiveSheet.CodeName
+Range对象和Worksheet对象都有Select（选定）和Activate（激活）方法。其区别和联系如下：
+一、从功能上来说，Select代表选定对象，Activate代表激活对象。
+二、从数量上来说，Select可以选定多个对象，Activate只能激活一个对象。
+三、对于单个对象，Select和Activate是一样的。
+四、Activate的对象必定在Select对象之中。当选定了多个对象时，其中某个对象必定是激活的对象。在已经Select的对象中，可以任意指定Activate的
+对象。如果Activate了当前Select对象之外的对象，则相当于重新执行了一次Select并激活。
+五、在每次重新Select之后，则系统会自动Activate其中的某个对象。
+例如：每张工作表A1单元格赋值520
+5.1 引用工作表
+2020年4月16日 13:08
+ 分区 第2季 的第 32 页 
